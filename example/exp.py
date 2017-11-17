@@ -6,16 +6,16 @@ import csv
 import json
 import requests
 
-loginURL = "http://crm.guxiansheng.cn/admin/index/login"
-usernameUrl = "http://crm.guxiansheng.cn/admin/user/index"
+loginURL = "loginURL"
+usernameUrl = "indexURL"
 crmCookies = {}
 def loginCrm():
     """
     login crm & get cookies
     :return:
     """
-    loginData = {"loginusername":"joelww",
-                 "loginpassword":123456}
+    loginData = {"loginusername":"loginusername",
+                 "loginpassword":"loginpassword"}
     reLogin = requests.post(url = loginURL,data = loginData)
     try:
         rejson = reLogin.json()
