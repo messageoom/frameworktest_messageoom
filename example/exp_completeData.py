@@ -6,7 +6,7 @@ import csv
 import json
 import requests
 
-loginURL = "loginURL"
+loginURL = "http://crm.guxiansheng.cn/admin/index/login"
 usernameUrl = "indexURL"
 crmCookies = {}
 def loginCrm():
@@ -14,9 +14,16 @@ def loginCrm():
     login crm & get cookies
     :return:
     """
-    loginData = {"loginusername":"loginusername",
-                 "loginpassword":"loginpassword"}
+    loginData = {"loginusername":"15183691117",
+                 "loginpassword":"691117"}
     reLogin = requests.post(url = loginURL,data = loginData)
+    # reLogin.eapseld.microseconds 发送第一个字节和完成解析报头之间的时间
+    interfaceTime = reLogin.elapsed.microseconds
+    interface_seconds = interfaceTime/(1000*1000.0)
+    print "此次登录总耗时：  %s 秒"%interface_seconds
+    print reLogin.content
+    print reLogin.status_code
+
     try:
         rejson = reLogin.json()
         #remrejson = str(rejson).replace("u", "")
@@ -94,5 +101,5 @@ def requestError():
 
 if __name__ == "__main__":
     loginCrm()
-    getCrmUser()
-    cmpData()
+    #getCrmUser()
+    #cmpData()
