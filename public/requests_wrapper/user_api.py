@@ -1,5 +1,35 @@
 __author__ = 'messageoom'
 
+import config
+
+test_auth = None
+test_admin_auth = None
+other_auth = None
+
+class Auth(object):
+    scheme = 'http'
+
+    def __init__(self, server, port, cookies=None):
+        if cookies:
+            self.cookies = cookies
+        self.auth = cookies
+        authority = "{server}:{port}".format(server=server, port=port)
+        self.base_url = "{scheme}://{authority}".format(
+            scheme=self.scheme,
+            authority=authority,
+        )
+
+
+
+
+
+
+
+
+
+
+
+
 import csv
 import codecs
 import random

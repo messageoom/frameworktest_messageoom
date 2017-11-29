@@ -19,6 +19,10 @@ HTTP/1.1 {status}
 """
 
 class  MeRequest(object):
+
+    #def __init__(self, cookies=None):
+    #    self.cookies = cookies
+
     def _log_request(self, request):
         print REQUEST_FORMATTER.format(
             method=request.method,
@@ -39,12 +43,12 @@ class  MeRequest(object):
             body=response.content
         )
 
-    def request(self, path, expected=None, e_code=None, conf={}):
+    def request(self, path=None, expected=None, e_code=None,cookies=None, conf={}):
         expected = expected or self.expected
         params = conf.get('params', None)
         headers = conf.get('headers', None)
         data = conf.get('data', None)
-        #cookies = conf.get('cookies',None)
+        cookies = conf.get('cookies',None)
 
         if '?' in path and params is not None:
             # Special treatment
@@ -52,8 +56,7 @@ class  MeRequest(object):
                 ['%s=%s' % (k, v) for k, v in params.iteritems()])
             params = None
 
-        response = self.func(self.auth.base_url+path, self.auth.auth,
-                             params, headers, data)
+        response = self.func(cookies,params, headers, data)
         if config.DEBUG:
             self._log_request(response.request)
             self._log_response(response)
@@ -71,14 +74,14 @@ class  MeRequest(object):
 class Post(MeRequest):
     expected = 1
 
-    def func(self, url, auth, params, headers, data):
-        return requests.post(url, data, None, auth=auth,
+    def func(self, url, params, headers, data):
+        return requests.post(data, url,
                              params=params, headers=headers)
 
 
 class Get(MeRequest):
     expected = 1
 
-    def func(self, url, auth, params, headers, data):
+    def func(self, url, cookies, params, headers, data):
         return requests.get(url, cookies=cookies,
                             params=params, headers=headers, data=data)
