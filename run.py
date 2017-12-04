@@ -1,11 +1,12 @@
 #coding=utf-8
 __author__ = 'messageoom'
+import json
 import inspect
 import argparse
 import unittest
 import HTMLTestRunner
 import config
-
+from tools import utils
 from tests.interface import test
 
 modules = [test]
@@ -35,6 +36,57 @@ def run():
     #生成报告的Title,描述
     runner = HTMLTestRunner.HTMLTestRunner(stream=fp,title='MsStock Test Report',description='This  is MsStock Test  Report')
     runner.run(suite)
+
+def read_conf(config=None):
+    config = './.conf.json' if config is None else config
+    try:
+        with open(config, 'r') as f:
+            conf = json.loads(f.read())
+            return conf
+    except IOError as e:
+        raise IOError(e)
+
+def execute_task(cases=None, config=None, debug=None,emil=None,type=None ):
+    """
+    :param cases:
+    :param config:
+    :param debug:
+    :param emil:
+    :param type:
+    :return:
+    """
+    if cases is None:
+        cases = cases_map.keys()
+    else:
+        module_cases = cases.split(',')
+        cases = list()
+        for case in module_cases:
+            if case in module_cases_map.keys():
+                cases += module_cases_map[case].keys()
+            elif case in cases_map.keys():
+                cases.append(case)
+            else:
+                raise Exception('%s is not an existed module.' % case)
+    conf_file = read_conf(config)
+    case_names = conf_file.keys()
+    utils.log_start()
+    for case in cases:
+        if case_names is not None:
+            confs = conf_file[case] if case in case_names else None
+            if confs is not None:
+                for conf in confs:
+                    try:
+                        cases_map[case](conf=conf)
+                        log_result(case, 'SUCCESSFUL')
+                    except Exception as e:
+                        log_result(case, 'FAILED')
+                        msg = traceback.format_exc()
+                        if debug is not None:
+                            print msg
+
+    # TODO log_start()
+
+    # TODO 剩余各参数的执行
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -82,11 +134,28 @@ if __name__ == "__main__":
         default=None,
         help='Get info of given testcase.'
     )
+
+    parser.add_argument(
+        '-e','--email',
+        dest='EMAIL',
+        default='messageoom@163.com',
+        help='Send report to mail'
+    )
+    parser.add_argument(
+        '-t','--type',
+        dest='TYPE',
+        default=None,
+        help='Specify the type of test,Type is requests and selenium'
+    )
     args = parser.parse_args()
+
+    #print args
 
     config.SERVER = args.SERVER
     config.PORT = args.PORT
     config.DEBUG = args.DEBUG
+    config.EMAIL = args.EMAIL
+    config.TYPE = args.TYPE
 
     if args.LIST:
         for case in sorted(cases_map.keys()):
@@ -97,7 +166,6 @@ if __name__ == "__main__":
             print args.CASE
             print cases_doc[args.CASE]
     else:
-        print ""
+        execute_task(args.CASES, args.CONF, args.DEBUG,args.EMAIL, args.TYPE)
         # TODO
-        #exec_task(args.CASES, args.CONF, args.DEBUG)
     #run()

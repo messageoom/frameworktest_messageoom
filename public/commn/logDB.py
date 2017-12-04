@@ -3,7 +3,7 @@ __author__ = 'messageoom'
 import MySQLdb
 
 def selectDB():
-    conn= MySQLdb.connect(host='192.168.0.157',
+    conn= MySQLdb.connect(host='192.168.0.XX',
                           port = 3306,
                           user='root',
                           passwd='messageoom',

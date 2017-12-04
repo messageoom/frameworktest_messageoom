@@ -2,6 +2,7 @@
 __author__ = 'messageoom'
 
 import os
+import time
 from config.readconfig import meReadconfig
 
 # 读取配置文件
@@ -11,8 +12,17 @@ read_config = meReadconfig(os.path.join(config_file_path,'config.ini'))
 cookies = read_config.getValue('Auth','cookies')
 # 项目参数设置
 prj_path = read_config.getValue('projectConfig','project_path')
-# 日志路径
-log_path = os.path.join(prj_path, 'report', 'log')
+def getLogPath():
+    """
+    creat log path
+    """
+    log_path = os.path.join(prj_path, 'report', 'log')
+    if os.path.exists(log_path):
+        return log_path
+        pass
+    else:
+        os.makedirs(log_path)
+        return log_path
 # 截图文件路径
 img_path = os.path.join(prj_path, 'report', 'image')
 # 测试报告路径
