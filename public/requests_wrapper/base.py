@@ -1,7 +1,10 @@
+#!/usr/bin/env python
+#coding=utf-8
 __author__ = 'messageoom'
 
-import config
 import requests
+import config
+import json
 from urlparse import urlparse
 
 REQUEST_FORMATTER = """
@@ -18,11 +21,8 @@ HTTP/1.1 {status}
 {body}
 """
 
-class  MeRequest(object):
 
-    #def __init__(self, cookies=None):
-    #    self.cookies = cookies
-
+class Request(object):
     def _log_request(self, request):
         print REQUEST_FORMATTER.format(
             method=request.method,
@@ -43,45 +43,73 @@ class  MeRequest(object):
             body=response.content
         )
 
-    def request(self, path=None, expected=None, e_code=None,cookies=None, conf={}):
-        expected = expected or self.expected
+    def request(self, url, expected_http_code=None,expected_response_code=None, e_code=None, conf={}):
+        """
+        :param url:  System Request Interface
+        :param expected_http_code:  The status code that the request returns
+        :param expected_response_code: Returns the status code in the data after a successful request
+        :param e_code:
+        :param conf:
+        :return:
+        """
+        expected_http_code = expected_http_code or self.expected_http_code
+        expected_response_code = expected_response_code or self.expected_response_code
         params = conf.get('params', None)
         headers = conf.get('headers', None)
         data = conf.get('data', None)
-        cookies = conf.get('cookies',None)
 
-        if '?' in path and params is not None:
-            # Special treatment
-            path += '&' + '&'.join(
-                ['%s=%s' % (k, v) for k, v in params.iteritems()])
-            params = None
+        response = self.func(url,
+                             params, headers, data)
+        #if config.DEBUG:
+        #    self._log_request(response.request)
+        #    self._log_response(response)
 
-        response = self.func(cookies,params, headers, data)
-        if config.DEBUG:
-            self._log_request(response.request)
-            self._log_response(response)
-
-        if response.status_code != expected:
-            raise Exception('[Expected: %s, Response %s]: %s' % (
-                str(expected), str(response.status_code), response.content))
+        if response.status_code != expected_http_code :
+            raise Exception('[Expected_http_code: %s, Response %s]: %s' % (
+                str(expected_http_code), str(response.status_code), response.content))
         elif e_code is not None and e_code not in response.content:
             raise Exception('Expected: %s, Response %s' % (
                 e_code, response.content))
+        try:
+            reCotent = response.content
+            json.dumps(str(reCotent))
+            responseCODE = json.loads(reCotent).get("code")
+        except:
+            raise Exception('[Expected_response_code: %s, Response: %s]'%(
+                str(expected_response_code,responseCODE)
+            ))
+        else:
+            if responseCODE != expected_response_code:
+                raise Exception('[Expected_response_code: %s, Response: %s]'%(
+                    str(expected_response_code),responseCODE
+                ))
+            else:
+                pass
 
         return response
 
-
-class Post(MeRequest):
-    expected = 1
+class Post(Request):
+    """
+    default expected_http_code=200, expected_response_code=1
+    """
+    expected_http_code = 200
+    expected_response_code = 1
 
     def func(self, url, params, headers, data):
-        return requests.post(data, url,
-                             params=params, headers=headers)
+        return requests.post(url,
+                            params=params, headers=headers, data=data)
+
+#Test the encapsulated module
+#Post().request("URL",conf={"data":{"loginusername":"username","loginpassword":"password"}})
 
 
-class Get(MeRequest):
-    expected = 1
+class Get(Request):
+    """
+    default expected_http_code=200, expected_response_code=1
+    """
+    expected_http_code = 200
+    expected_response_code = 1
 
-    def func(self, url, cookies, params, headers, data):
-        return requests.get(url, cookies=cookies,
+    def func(self, url, params, headers, data):
+        return requests.get(url,
                             params=params, headers=headers, data=data)
