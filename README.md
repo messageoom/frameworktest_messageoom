@@ -1,5 +1,5 @@
-# 基于 selenium python搭建web项目的测试框架
-
+## 基于requests selenium python搭建的web项目测试框架
+@ author messageoom
 * [1. 概述](#1)
     * [1.1 <span >selenium 安装</span>](#1.1)
     * [1.2 <span >pychram git配置 </span>](#1.2)
@@ -24,50 +24,75 @@
 * TODO
 
 <h3 id="1.3">1.3 用到的三方包</h3>
+* requests; selenium; NumPy; sqlite3; HTMLTestRunner; ConfigParser; MySQLdb
+  * >以上三方包出 HTMLTestRunner 不能用pip install来安装外，其余都可使用pip安装。将HTMLTestRunner.py文件下载后放置python\lib下即可。
 * NumPy
-    * > NumPy数组是一个多维数组对象，称为ndarray。其由两部分组成：1.实际的数据 2.描述这些数据的元数据
+  * > NumPy数组是一个多维数组对象，称为ndarray。其由两部分组成：1.实际的数据 2.描述这些数据的元数据
 
 * HTMLTestRunner
-    * > HTMLTestRunner是Python标准库的unittest模块的扩展。 它生成易于使用的HTML测试报告。
+  * > HTMLTestRunner是Python标准库的unittest模块的扩展。 它生成易于使用的HTML测试报告。
 * unittest
-    * > python 单元测试框架
+  * > python 单元测试框架
 * sqlite3
-    * > sqlite3模块（轻量级数据库），用于满足框架中存放日志及报告的需求，
+  * > sqlite3模块（轻量级数据库），用于满足框架中存放日志及报告的需求，
 
 
 
-<h2 id="1">二 框架介绍</h2>
+<h2 id="1">二 框架概览</h2>
 ```
-│  README.md                        ---------------框架介绍文档
-│  run.py                           ---------------运行主函数
-│
-├─config                            ---------------存放配置文件及全局变量
+
+│  config.py
+│  interfaceAuth.py
+│  list.txt
+│  README.md
+│  run.py
+│          
+├─config
 │      config.ini
 │      globalparam.py
+│      globalparam.pyc
+│      readconfig.py
+│      readconfig.pyc
 │      __init__.py
-│
-├─public                            ---------------封装的公共方法
+│      
+├─example
+│      exp_completeData.py
+│      exp_interfaceTime.py
+│      meInspect.py
+│      
+├─mCase
+│      test_login.py
+│      test_post_article.py
+│      __init__.py
+│      
+├─public
 │  │  __init__.py
-│  │
-│  └─commn
-│          basepage.py
-│          log.py
-│          logDB.py
-│          readconfig.py
-│          utils.py
+│  │  
+│  ├─commn
+│  │      basepage.py
+│  │      log.py
+│  │      logDB.py
+│  │      __init__.py
+│  │      
+│  └─requests_wrapper
+│          admin_api.py
+│          base.py
+│          user_api.py
 │          __init__.py
-│
-├─report                            ----------------存放测试报告及日志记录
-│  │  MsAutoTestResult.html
-│  │
-│  └─log
-│          2017-07-24.log
-│          2017-07-27.log
-│          2017-08-07.log
-│
-└─testcase                          ----------------测试用例
-        test_login.py
-        test_login.pyc
-        test_post_article.py
-        __init__.py
+│          
+├─tests
+│  │  __init__.py
+│  │  
+│  ├─interface
+│  │      test.py
+│  │      __init__.py
+│  │      
+│  └─webUI
+│          test_login.py
+│          test_post_article.py
+│          __init__.py
+│          
+└─tools
+        interfaceTime.py
+        
 ```
