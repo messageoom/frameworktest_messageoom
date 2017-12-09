@@ -39,8 +39,8 @@
 
 
 <h2 id="1">二 框架概览</h2>
-```
 
+<pre><code>
 │  config.py
 │  interfaceAuth.py
 │  list.txt
@@ -94,5 +94,4 @@
 │          
 └─tools
         interfaceTime.py
-        
-```
+</code></pre>
