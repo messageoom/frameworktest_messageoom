@@ -4,12 +4,14 @@ import json
 import inspect
 import argparse
 import unittest
+import traceback
 import HTMLTestRunner
-import config
+import run_config
+import interfaceAuth
 from tools import utils
-from tests.interface import test
-
-modules = [test]
+from tests.interface import IVR,Customer_Management
+#Test Case Suite  ---> You must import the use case set module
+modules = [IVR,Customer_Management]
 cases_map = dict()
 cases_doc = dict()
 module_cases_map = dict()
@@ -69,7 +71,10 @@ def execute_task(cases=None, config=None, debug=None,emil=None,type=None ):
                 raise Exception('%s is not an existed module.' % case)
     conf_file = read_conf(config)
     case_names = conf_file.keys()
-    utils.log_start()
+    # Auth
+    interfaceAuth.loginSys()
+    log_util = utils
+    log_util.log_start()
     for case in cases:
         if case_names is not None:
             confs = conf_file[case] if case in case_names else None
@@ -77,15 +82,25 @@ def execute_task(cases=None, config=None, debug=None,emil=None,type=None ):
                 for conf in confs:
                     try:
                         cases_map[case](conf=conf)
-                        log_result(case, 'SUCCESSFUL')
+                        log_util.log_execute(case, 'SUCCESSFUL')
                     except Exception as e:
-                        log_result(case, 'FAILED')
+                        log_util.log_execute(case, 'FAILED')
                         msg = traceback.format_exc()
                         if debug is not None:
                             print msg
 
-    # TODO log_start()
+            else:
+                try:
+                    cases_map[case]()
+                    log_util.log_execute(case, 'SUCCESSFUL')
+                except Exception as e:
+                    log_util.log_execute(case, 'FAILED')
+                    msg = traceback.format_exc()
+                    if debug is not None:
+                        print msg
 
+    log_util.log_result()
+    log_util.log_end()
     # TODO 剩余各参数的执行
 
 if __name__ == "__main__":
@@ -151,11 +166,11 @@ if __name__ == "__main__":
 
     #print args
 
-    config.SERVER = args.SERVER
-    config.PORT = args.PORT
-    config.DEBUG = args.DEBUG
-    config.EMAIL = args.EMAIL
-    config.TYPE = args.TYPE
+    run_config.SERVER = args.SERVER
+    run_config.PORT = args.PORT
+    run_config.DEBUG = args.DEBUG
+    run_config.EMAIL = args.EMAIL
+    run_config.TYPE = args.TYPE
 
     if args.LIST:
         for case in sorted(cases_map.keys()):
