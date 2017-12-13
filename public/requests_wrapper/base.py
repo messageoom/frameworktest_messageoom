@@ -3,7 +3,7 @@
 __author__ = 'messageoom'
 
 import requests
-import config
+from config import globalparam
 import json
 from urlparse import urlparse
 
@@ -31,7 +31,8 @@ class Request(object):
             headers='\n'.join(
                 ["%s: %s" % (k, v) for k, v in request.headers.iteritems()]
             ),
-            body=request.body
+            body=request.body,
+            cookies = request.cookies
         )
 
     def _log_response(self, response):
@@ -40,10 +41,11 @@ class Request(object):
             headers='\n'.join(
                 ["%s: %s" % (k, v) for k, v in response.headers.iteritems()]
             ),
-            body=response.content
+            body=response.content,
+            cookies = response.cookies
         )
 
-    def request(self, url, expected_http_code=None,expected_response_code=None, e_code=None, conf={}):
+    def request(self, url, expected_http_code=None,expected_response_code=None, e_code=None, conf={},cookies = None):
         """
         :param url:  System Request Interface
         :param expected_http_code:  The status code that the request returns
@@ -57,9 +59,12 @@ class Request(object):
         params = conf.get('params', None)
         headers = conf.get('headers', None)
         data = conf.get('data', None)
+        cookies = cookies or self.cookies
+        print cookies,expected_response_code,expected_http_code
 
-        response = self.func(url,
-                             params, headers, data)
+        #response = self.func(url,
+        #                     params, headers, data, cookies)
+        response = self.func(url, params, headers, data, cookies)
         #if config.DEBUG:
         #    self._log_request(response.request)
         #    self._log_response(response)
@@ -88,28 +93,27 @@ class Request(object):
 
         return response
 
+readconf = globalparam.read_config
+cookie = eval(readconf.getValue("Auth","cookies"))
 class Post(Request):
     """
-    default expected_http_code=200, expected_response_code=1
+    default expected_http_code=200, expected_response_code=1 cookies=ini file cookies
     """
     expected_http_code = 200
     expected_response_code = 1
-
-    def func(self, url, params, headers, data):
+    cookies = cookie
+    def func(self, url, params, headers, data, cookies):
         return requests.post(url,
-                            params=params, headers=headers, data=data)
-
-#Test the encapsulated module
-#Post().request("URL",conf={"data":{"loginusername":"username","loginpassword":"password"}})
-
+                            params=params, headers=headers, data=data, cookies=cookies)
 
 class Get(Request):
     """
-    default expected_http_code=200, expected_response_code=1
+    default expected_http_code=200, expected_response_code=1 cookies=ini file cookies
     """
     expected_http_code = 200
     expected_response_code = 1
+    cookies = cookie
 
-    def func(self, url, params, headers, data):
+    def func(self, url, params, headers, data, cookies):
         return requests.get(url,
-                            params=params, headers=headers, data=data)
+                            params=params, headers=headers, data=data, cookies=cookies)
