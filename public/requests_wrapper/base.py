@@ -4,6 +4,7 @@ __author__ = 'messageoom'
 
 import requests
 from config import globalparam
+import run_config
 import json
 from urlparse import urlparse
 
@@ -32,7 +33,6 @@ class Request(object):
                 ["%s: %s" % (k, v) for k, v in request.headers.iteritems()]
             ),
             body=request.body,
-            cookies = request.cookies
         )
 
     def _log_response(self, response):
@@ -42,7 +42,6 @@ class Request(object):
                 ["%s: %s" % (k, v) for k, v in response.headers.iteritems()]
             ),
             body=response.content,
-            cookies = response.cookies
         )
 
     def request(self, url, expected_http_code=None,expected_response_code=None, e_code=None, conf={},cookies = None):
@@ -60,14 +59,12 @@ class Request(object):
         headers = conf.get('headers', None)
         data = conf.get('data', None)
         cookies = cookies or self.cookies
-        print cookies,expected_response_code,expected_http_code
 
-        #response = self.func(url,
-        #                     params, headers, data, cookies)
-        response = self.func(url, params, headers, data, cookies)
-        #if config.DEBUG:
-        #    self._log_request(response.request)
-        #    self._log_response(response)
+        response = self.func(url,
+                             params, headers, data, cookies)
+        if run_config.DEBUG:
+            self._log_request(response.request)
+            self._log_response(response)
 
         if response.status_code != expected_http_code :
             raise Exception('[Expected_http_code: %s, Response %s]: %s' % (
