@@ -1,0 +1,17 @@
+{
+    "tests.interface.loginSys.loginSys": [
+        {
+            "data": {
+              "loginusername":"loginusername",
+              "loginpassword":"loginpassword"
+            }
+        }
+    ],
+  "tests.interface.test.getcalllist_003": [
+        {
+            "data": {
+            }
+        }
+    ]
+
+}
