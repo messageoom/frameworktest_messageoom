@@ -44,7 +44,7 @@ class Request(object):
             body=response.content,
         )
 
-    def request(self, url, expected_http_code=None,expected_response_code=None, e_code=None, conf={},cookies = None):
+    def request(self, url, expected_http_code=None,expected_response_code=None,expected_response_data=None, e_code=None, conf={},cookies = None):
         """
         :param url:  System Request Interface
         :param expected_http_code:  The status code that the request returns
@@ -55,40 +55,45 @@ class Request(object):
         """
         expected_http_code = expected_http_code or self.expected_http_code
         expected_response_code = expected_response_code or self.expected_response_code
+        expected_response_data = expected_response_data or self.expected_response_data
         params = conf.get('params', None)
         headers = conf.get('headers', None)
         data = conf.get('data', None)
         cookies = cookies or self.cookies
 
-        response = self.func(url,
-                             params, headers, data, cookies)
-        if run_config.DEBUG:
-            self._log_request(response.request)
-            self._log_response(response)
+        if expected_response_data is None or self.expected_response_data is None:
+            response = self.func(url,
+                                 params, headers, data, cookies)
+            if run_config.DEBUG:
+                self._log_request(response.request)
+                self._log_response(response)
 
-        if response.status_code != expected_http_code :
-            raise Exception('[Expected_http_code: %s, Response %s]: %s' % (
-                str(expected_http_code), str(response.status_code), response.content))
-        elif e_code is not None and e_code not in response.content:
-            raise Exception('Expected: %s, Response %s' % (
-                e_code, response.content))
-        try:
-            reCotent = response.content
-            json.dumps(str(reCotent))
-            responseCODE = json.loads(reCotent).get("code")
-        except:
-            raise Exception('[Expected_response_code: %s, Response: %s]'%(
-                str(expected_response_code,responseCODE)
-            ))
-        else:
-            if responseCODE != expected_response_code:
+            if response.status_code != expected_http_code :
+                raise Exception('[Expected_http_code: %s, Response %s]: %s' % (
+                    str(expected_http_code), str(response.status_code), response.content))
+            elif e_code is not None and e_code not in response.content:
+                raise Exception('Expected: %s, Response %s' % (
+                    e_code, response.content))
+            try:
+                reCotent = response.content
+                json.dumps(str(reCotent))
+                responseCODE = json.loads(reCotent).get("code")
+            except:
                 raise Exception('[Expected_response_code: %s, Response: %s]'%(
-                    str(expected_response_code),responseCODE
+                    str(expected_response_code,responseCODE)
                 ))
             else:
-                pass
+                if responseCODE != expected_response_code:
+                    raise Exception('[Expected_response_code: %s, Response: %s]'%(
+                        str(expected_response_code),responseCODE
+                    ))
+                else:
+                    # TODO Interface data comparison
+                    pass
 
-        return response
+            return response
+        else:
+            pass
 
 readconf = globalparam.read_config
 cookie = eval(readconf.getValue("Auth","cookies"))
@@ -98,6 +103,7 @@ class Post(Request):
     """
     expected_http_code = 200
     expected_response_code = 1
+    expected_response_data = None
     cookies = cookie
     def func(self, url, params, headers, data, cookies):
         return requests.post(url,
