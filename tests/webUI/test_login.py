@@ -1,10 +1,13 @@
 #coding=utf-8
-__author__ = 'Kal-W'
+__author__ = 'messageoom'
 
 import time
-from config import globalparam
-from public.commn import basepage
+
 from selenium.common.exceptions import WebDriverException
+
+from config import globalparam
+from public.selenium_base import basepage
+
 
 class TestLogin(basepage.BasePage):
 
