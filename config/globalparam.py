@@ -31,7 +31,7 @@ report_path = os.path.join(prj_path, 'report', 'testreport')
 data_path = os.path.join(prj_path, 'data', 'testdata')
 
 # web测试项目主页
-base_url = “”base_url
+base_url = "base_url"
 
 # default browser
 browser = 'chrome'
