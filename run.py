@@ -1,18 +1,20 @@
 #coding=utf-8
 __author__ = 'messageoom'
-import json
-import inspect
-import argparse
-import unittest
-import traceback
 import HTMLTestRunner
-import run_config
+import argparse
+import inspect
+import json
+import traceback
+import unittest
+
 import interfaceAuth
-from tools import utils
-from tests.interface import IVR,Customer_Management
+import run_config
+from public.commn import run_utils
+from tests.interface import IVR, Customer_Management
+
 #Test Case Suite  ---> You must import the use case set module
 
-log_util = utils
+log_util = run_utils
 modules = [IVR,Customer_Management]
 cases_map = dict()
 cases_doc = dict()
