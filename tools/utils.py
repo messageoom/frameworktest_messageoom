@@ -138,3 +138,15 @@ def sendmail(addrs=readconf.getValue('Email','to_addrs')):
             print "测试报告已发送至此邮件: {}".format(to_addrs)
         except smtplib.SMTPException as e:
             raise e
+
+
+def deleteCookies():
+    """
+    delete cookies
+    """
+    try:
+        confile = globalparam.confile
+        readconf.deleteOption("Auth", "cookies")
+        readconf.cf.write(open(confile,'w'))
+    except IOError as e:
+        raise e

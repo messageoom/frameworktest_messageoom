@@ -11,6 +11,8 @@ import interfaceAuth
 from tools import utils
 from tests.interface import IVR,Customer_Management
 #Test Case Suite  ---> You must import the use case set module
+
+log_util = utils
 modules = [IVR,Customer_Management]
 cases_map = dict()
 cases_doc = dict()
@@ -73,7 +75,6 @@ def execute_task(cases=None, config=None, debug=None,emil=None,type=None ):
     case_names = conf_file.keys()
     # Auth
     interfaceAuth.loginSys()
-    log_util = utils
     log_util.log_start()
     for case in cases:
         if case_names is not None:
@@ -101,6 +102,7 @@ def execute_task(cases=None, config=None, debug=None,emil=None,type=None ):
 
     log_util.log_result()
     log_util.log_end()
+    log_util.deleteCookies()
     # TODO 剩余各参数的执行
 
 if __name__ == "__main__":
@@ -175,12 +177,15 @@ if __name__ == "__main__":
     if args.LIST:
         for case in sorted(cases_map.keys()):
             print case
+            log_util.deleteCookies()
     elif args.CASE:
         if args.CASE in cases_map.keys():
             print '\n'
             print args.CASE
             print cases_doc[args.CASE]
+            log_util.deleteCookies()
     else:
         execute_task(args.CASES, args.CONF, args.DEBUG,args.EMAIL, args.TYPE)
+        log_util.deleteCookies()
         # TODO
     #run()

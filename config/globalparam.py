@@ -7,9 +7,10 @@ from config.readconfig import meReadconfig
 
 # 读取配置文件
 config_file_path = os.path.split(os.path.realpath(__file__))[0]
-read_config = meReadconfig(os.path.join(config_file_path,'config.ini'))
+confile = os.path.join(config_file_path,'config.ini')
+read_config = meReadconfig(confile)
 # get cookies
-cookies = read_config.getValue('Auth','cookies')
+#cookies = read_config.getValue('Auth','cookies')
 # 项目参数设置
 prj_path = read_config.getValue('projectConfig','project_path')
 def getLogPath():

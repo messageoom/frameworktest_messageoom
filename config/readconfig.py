@@ -27,12 +27,15 @@ class meReadconfig(object):
 
     def getValue(self, section, option):
         """
-        #project_path=F:\joelwwWorkSpace\scrips\frameworktest_messageoom
         :param section:INI文件中的节
         :param option:INI文件中节中的键
-        :return:F:\joelwwWorkSpace\scrips\frameworktest_messageoom
         """
         return self.cf.get(section,option)
 
-
-
+    def deleteOption(self,section, option):
+        """
+        delete option
+        :param section:
+        :param option:
+        """
+        self.cf.remove_option(section, option)
