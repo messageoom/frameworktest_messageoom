@@ -19,6 +19,11 @@ def get_List_Customer(conf):
     """
     post.request(interfaceURL.get_list_customer, conf=conf)
 
+def get_list_left_customer(conf):
+    """
+    获取列表左侧数据
+    """
+    post.request(interfaceURL.get_list_left_customer, conf=conf)
 
 
 def delete_Customer(conf):
@@ -26,4 +31,10 @@ def delete_Customer(conf):
     删除客户:
     """
     post.request(interfaceURL.delete_customer, conf=conf)
+
+def check_customer_contact(conf):
+    """
+    验证用户联系唯一性
+    """
+    post.request(interfaceURL.check_customer_contact,conf=conf,expected_response_code=-1)
 

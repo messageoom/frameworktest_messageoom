@@ -1,17 +1,106 @@
 {
-    "tests.interface.loginSys.loginSys": [
+    "tests.interface.Customer_Management.creat_Customer": [
         {
             "data": {
-              "loginusername":"loginusername",
-              "loginpassword":"loginpassword"
+              "from_channel":"105",
+              "mark":"",
+              "real_name":"OOMTEST",
+              "id_card":"",
+              "sex":"1",
+              "qq":"",
+              "weixin":"OOM004",
+              "mobile":"",
+              "customer_type":"",
+              "custom_mark":""
             }
         }
     ],
-  "tests.interface.test.getcalllist_003": [
+  "tests.interface.Customer_Management.get_List_Customer":[
+    {
+      "data":{
+        "customerPool":"",
+        "name_or_tel":"",
+        "mark_id":"",
+        "tag_id":"",
+        "create_time":"",
+        "relation_time":"",
+        "no_relation_time":"",
+        "turnover_time":"",
+        "join_time":"",
+        "update_time":"",
+        "service_end_time":"",
+        "organizational_structure":"",
+        "custom_group_id":"",
+        "shareToMe":"",
+        "transferToMe":"",
+        "groupCustomer":"",
+        "specialGroup":"",
+        "customerPool":"",
+        "cache_file_name":"relation_customer_employee_cache_right_140"
+      }
+    }
+  ],
+  "tests.interface.Customer_Management.get_list_left_customer":[
+    {
+      "data":{
+
+      }
+    }
+  ],
+  "tests.interface.Customer_Management.delete_Customer":[
+    {
+      "data":{
+        "customerIds":"14332"
+      }
+    }
+  ],
+  "tests.interface.Customer_Management.check_customer_contact":[
+    {
+      "data":{
+        "customer_id":"14334",
+        "contact_type":"1",
+        "contact_way":"15183691117",
+        "action_type":"add"
+      }
+    }
+  ],
+  "tests.interface.IVR.get_record": [
         {
             "data": {
             }
+
         }
-    ]
+    ],
+  "tests.interface.IVR.get_Call_Record_All":[
+    {
+      "data":{
+        "page_size":"",
+        "cur_page":"",
+        "build":"",
+        "callType":"",
+        "talked":"",
+        "callime_start":"",
+        "callime_end":"",
+        "start_date":"",
+        "end_date":"",
+        "phone_num":""
+      }
+    }
+  ],
+  "tests.interface.IVR.call_number":[
+    {
+      "data":{
+        "contact_id":"",
+        "call_type":""
+      }
+    }
+  ],
+  "tests.interface.IVR.delete_Record":[
+    {
+      "data":{
+        "record_id":""
+      }
+    }
+  ]
 
 }
