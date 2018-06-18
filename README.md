@@ -22,11 +22,6 @@ style="display:block;width:900px; height:400px;"
 src="https://www.processon.com/embed/5b274be4e4b0200a8e92ad48">
 </iframe></p>
 
-<p><iframe style="width: 100%; height: 300px;" src="https://demo.xiaohuochai.site/css/transition/t4.html" frameborder="0" width="320" height="240"></iframe></p>
-作者：
-链接：https://www.imooc.com/article/23274
-来源：慕课网
-
 <h2 id="2">二 文档</h2>
 <h3 id="2.1">1.1 组件</h3>
 TODO!
