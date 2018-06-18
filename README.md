@@ -17,10 +17,12 @@ webUI测试、性能测试（TODO）。通过使用此工具，可完成web项�
 接口负载测试（TODO）、输出测试报告、数据分析等一系列动作。
 
 <h3 id="1.2">1.2 结构图</h3>
+```html
 <iframe id="embed_dom" name="embed_dom" frameborder="0" 
 style="display:block;width:900px; height:400px;" 
 src="https://www.processon.com/embed/5b274be4e4b0200a8e92ad48">
 </iframe>
+```
 
 <h2 id="2">二 文档</h2>
 <h3 id="2.1">1.1 组件</h3>
