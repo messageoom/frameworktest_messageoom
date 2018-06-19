@@ -27,31 +27,31 @@ webUI测试、性能测试（TODO）。通过使用此工具，可完成web项�
 </p>
 
 <h3 id="1.3">1.3 目录概要</h3>
-```bash
+<pre><code>
 │  execute.py(执行文件)
 │  exe_config.py
-│      
+│
 ├─config（全局配置文件）
 │  │  config.ini
 │  │  getconfig.py
 │  │  globalparam.py
-│          
+│
 ├─docs（文档）
-│      
+│
 ├─example
-│      
+│
 ├─public
 │  │  im_auth.py
 │  │  requests_wrapper.py（基类）
-│  │  
+│  │
 │  ├─commn（公用的一些方法）
-│          
+│
 ├─report（报告）
-│          
+│
 ├─tests（测试用例）
-│          
+│
 ├─.conf.json（测试用例配置参数）
-```
+</code></pre>
 
 <h2 id="2">二 文档</h2>
 <h3 id="2.1">1.1 组件</h3>
